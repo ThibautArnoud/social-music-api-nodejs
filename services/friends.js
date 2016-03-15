@@ -12,7 +12,7 @@ exports.findOneByQuery = function(query) {
 
 exports.findWhereIdIn = function(array) {
    return Friends.find({
-       '_id': { $in: array}
+       'userAskId': { $in: array}
    });
 };
 
@@ -20,11 +20,6 @@ exports.create = function(friend) {
     return Friends.createAsync(friend);
 };
 
-exports.deleteAll = function() {
-    return Friends.removeAsync();
-};
-
-exports.updateSongById = function(songId, songToUpdate) {
-    // return Songs.updateAsync({_id: songId}, songToUpdate); // updates but doesn't return updated document
-    return Friends.findOneAndUpdateAsync({_id: songId}, songToUpdate, {new: true}); // https://github.com/Automattic/mongoose/issues/2756
+exports.deleteAsk = function(query) {
+    return Friends.findOneAndRemoveAsync();
 };

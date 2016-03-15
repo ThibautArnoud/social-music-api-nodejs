@@ -1,0 +1,24 @@
+<% include partials/header %>
+   <h1>Invitation</h1>
+   <hr/>
+   <table class="table table-striped table-bordered">
+       <tr>
+           <th>display Name</th>
+           <th>Username</th>
+           <th></th>
+       </tr>
+       <% askFriends.forEach(function(askFriend) {%>
+         <tr>
+           <td>
+             <a href="/user/<%=askFriends._id%>"><%=askFriend.displayName%></a>
+           </td>
+           <td><%=askFriend.username%></td>
+           <td>
+             <form method="post" action="/users/me/friends/<%=askFriend._id%>/accepts" class="form-inline">
+               <button type="submit" class="btn btn-default">Accept</button>
+             </form>
+          </td>
+         </tr>
+       <% }); %>
+   </table>
+<% include partials/footer %>

@@ -6,7 +6,8 @@ var userSchema = mongoose.Schema({
     password: {type: String, required: true, select: false},
     displayName: {type: String, required: true},
     listFavoriteSongs: [mongoose.Schema.Types.ObjectId],
-    createdAt: {type: Date, 'default': Date.now}
+    createdAt: {type: Date, 'default': Date.now},
+    friends: [mongoose.Schema.Types.ObjectId]
 });
 
 module.exports = mongoose.model('user', userSchema);

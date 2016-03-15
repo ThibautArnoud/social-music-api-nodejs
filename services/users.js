@@ -14,6 +14,20 @@ exports.addFavoritesToUser = function(userId, songId) {
   );
 };
 
+exports.addFriend = function(userId, friendId) {
+  return Users.findOneAndUpdateAsync(
+    {_id: userId},
+    {$push: {friends: friendId}},
+    {new: true}
+  );
+};
+
+exports.findFriendsWhereIdIn = function(array) {
+   return Users.find({
+       '_id': { $in: array}
+   });
+};
+
 exports.removeFavoriteToUser = function(userId, songId) {
   return Users.findOneAndUpdateAsync(
     {_id: userId},
@@ -32,6 +46,12 @@ exports.removeAllFavorites = function(userId) {
 
 exports.find = function(query) {
     return Users.findAsync(query);
+};
+
+exports.findWhereIdIn = function(array) {
+   return Users.find({
+       '_id': { $in: array}
+   });
 };
 
 exports.lastUsers = function() {

@@ -1,0 +1,18 @@
+<% include partials/header %>
+   <h1>Friends</h1>
+   <hr/>
+   <table class="table table-striped table-bordered">
+       <tr>
+           <th>display Name</th>
+           <th>Username</th>
+       </tr>
+       <% friends.forEach(function(friend) {%>
+         <tr>
+           <td>
+             <a href="/user/<%=friend._id%>"><%=friend.displayName%></a>
+           </td>
+           <td><%=friend.username%></td>
+         </tr>
+       <% }); %>
+   </table>
+<% include partials/footer %>

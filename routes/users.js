@@ -112,6 +112,88 @@ router.get('/me', function(req, res){
   }
 });
 
+router.get('/me/friends/ask', function(req, res){
+  if (req.accepts('text/html') || req.accepts('application/json')){
+    FriendService.getFriendsAsk({userReceiveId: req.user._id})
+      .then(function(requestsFriend){
+        if(!requestsFriend){
+          res.status(404).send({err: 'No request friend found'});
+          return;
+        }
+        idRequestsFriend = [];
+        requestsFriend.forEach(function(request){
+          idRequestsFriend.push(request.userAskId);
+        });
+        UserService.findWhereIdIn(idRequestsFriend)
+          .then(function(askFriends){
+            return res.render('friendsAsk', {askFriends: askFriends});
+          })
+      })
+    ;
+  }
+  else{
+    res.status(406).send({err: 'Not valid type for asked ressource'});
+  }
+});
+
+router.post('/me/friends/:id/accepts', function(req,res){
+  if (req.accepts('text/html') || req.accepts('application/json')){
+    UserService.addFriend(req.params.id, req.user._id)
+      .then(function(){
+        UserService.addFriend(req.user._id, req.params.id)
+          .then(function(user){
+            FriendService.deleteAsk(req.user._id, req.params.id)
+              .then(function(){
+                req.logIn(user, function(error) {
+                  if (!error) {
+                    if (req.accepts('text/html')) {
+                        return res.redirect("/users/me/friends");
+                    }
+                    if (req.accepts('application/json')) {
+                        res.status(201).send(user);
+                    }
+                  }
+                });
+              })
+            ;
+          })
+      })
+    ;
+  }
+  else{
+    res.status(406).send({err: 'Not valid type for asked ressource'});
+  }
+});
+
+router.get('/me/friends', function(req, res){
+  if(req.accepts('text/html') || req.accepts('application/json')){
+    UserService.findOneByQuery({_id: req.user._id})
+      .then(function(user){
+        UserService.findFriendsWhereIdIn(user.friends)
+          .then(function(friends){
+            if(friends){
+              if(req.accepts('text/html')) {
+                  return res.render("friends", {user: user, friends: friends});
+              }
+              if (req.accepts('application/json')) {
+                  res.status(201).send(user);
+              }
+            }
+            if(req.accepts('text/html')) {
+                return res.render("friends", {user: user});
+            }
+            if (req.accepts('application/json')) {
+                res.status(201).send(user);
+            }
+          })
+      })
+    ;
+  }
+  else{
+    res.status(406).send({err: 'Not valid type for asked ressource'});
+  }
+});
+
 router.get('/:id', function(req, res){
   if (req.accepts('text/html') || req.accepts('application/json')){
       UserService.findOneByQuery({_id: req.params.id})
