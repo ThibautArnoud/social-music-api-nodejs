@@ -6,6 +6,9 @@
    <% if(songs == 0){ %>
      <strong>You have no favorite songs</strong>
    <%}else { %>
+   <form method="post" action="/songs/favorite/all?_method=delete" class="form-inline">
+     <button type="submit" class="btn btn-default">Delete all songs</button>
+   </form>
    <table class="table table-striped table-bordered">
        <tr>
            <th>Title</th>
@@ -16,24 +19,25 @@
            <th></th>
        </tr>
        <% songs.forEach(function(song) {%>
-           <tr>
-               <td>
-                   <a href="/songs/<%=song._id%>"><%=song.title%></a>
-               </td>
-               <td><%=song.album%></td>
-               <td><%=song.artist%></td>
-               <td>
-                   <% if (song.year) { %><%=song.year%><% } %>
-               </td>
-               <td>
-                   <% if (song.bpm) { %><%=song.bpm%><% } %>
-               </td>
-               <td><form method="delete" action="/songs/<%= song._id%>/favorite" class="form-inline">
-                 <button type="submit" class="btn btn-default">Supprimer</button>
-               </form></td>
-           </tr>
+         <tr>
+           <td>
+             <a href="/songs/<%=song._id%>"><%=song.title%></a>
+           </td>
+           <td><%=song.album%></td>
+           <td><%=song.artist%></td>
+           <td>
+             <% if (song.year) { %><%=song.year%><% } %>
+           </td>
+           <td>
+             <% if (song.bpm) { %><%=song.bpm%><% } %>
+           </td>
+           <td>
+             <form method="post" action="/songs/<%= song._id%>/favorite?_method=delete" class="form-inline">
+               <button type="submit" class="btn btn-default">Delete</button>
+             </form>
+          </td>
+         </tr>
        <% }) %>
    </table>
    <%}%>
-   <a href="/users">All users</a>
 <% include partials/footer %>

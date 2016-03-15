@@ -14,10 +14,18 @@ exports.addFavoritesToUser = function(userId, songId) {
   );
 };
 
-exports.removeFavoritesToUser = function(userId, songId) {
-  return Users.findOneAndDeleteAsync(
+exports.removeFavoriteToUser = function(userId, songId) {
+  return Users.findOneAndUpdateAsync(
     {_id: userId},
-    {$push: {listFavoriteSongs: songId}},
+    {$pop: {listFavoriteSongs: songId}},
+    {new: true}
+  );
+};
+
+exports.removeAllFavorites = function(userId) {
+  return Users.findOneAndUpdateAsync(
+    {_id: userId},
+    {listFavoriteSongs: []},
     {new: true}
   );
 };

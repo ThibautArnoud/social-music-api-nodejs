@@ -1,5 +1,8 @@
 <% include partials/header %>
    <h1>Welcome to Social Music</h1>
+   <% if(nbrAskFriends){ %>
+     <h3><a href="/users/me/friends/ask"><%=nbrAskFriends%> user(s) ask you to be your friend</a></h3>
+   <%}%>
    <h2>Top 5 chansons</h2>
     <table class="table table-condensed">
         <thead>

@@ -115,17 +115,41 @@ router.post('/:id/favorite', function(req, res) {
 });
 
 router.delete('/:id/favorite', function(req, res) {
-    UserService.addFavoritesToUser(req.user._id, req.params.id)
+    UserService.removeFavoriteToUser(req.user._id, req.params.id)
         .then(function(user) {
           req.logIn(user, function(error) {
             if (!error) {
               if (req.accepts('text/html')) {
-                  return res.redirect("/songs/" + req.params.id);
+                  return res.redirect("/users/me");
               }
               if (req.accepts('application/json')) {
                   res.status(201).send(user);
               }
             }
+            res.status(500).send(err);
+            return;
+          });
+        })
+        .catch(function(err) {
+            res.status(500).send(err);
+        })
+    ;
+});
+
+router.delete('/favorite/all', function(req, res) {
+    UserService.removeAllFavorites(req.user._id, req.params.id)
+        .then(function(user) {
+          req.logIn(user, function(error) {
+            if (!error) {
+              if (req.accepts('text/html')) {
+                  return res.redirect("/users/me");
+              }
+              if (req.accepts('application/json')) {
+                  res.status(201).send(user);
+              }
+            }
+            res.status(500).send(err);
+            return;
           });
         })
         .catch(function(err) {

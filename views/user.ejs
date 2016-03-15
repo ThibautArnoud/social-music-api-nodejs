@@ -2,6 +2,9 @@
    <h1><%=user.displayName%></h1>
    <h2><%=user.username%></h2>
    <hr/>
+   <form method="post" action="/users/<%= user._id%>/friend" class="form-inline">
+     <button type="submit" class="btn btn-default">Add to friends</button>
+   </form>
    <h3>Favorite Songs</h3>
    <% if(songs == 0){ %>
      <strong>No favorite songs</strong>

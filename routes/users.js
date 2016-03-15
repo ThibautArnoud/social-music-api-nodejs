@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var UserService = require('../services/users');
 var SongService = require('../services/songs');
+var FriendService = require('../services/friends');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -48,6 +49,23 @@ router.get('/', function(req, res, next) {
   }
   else {
       res.status(406).send({err: 'Not valid type for asked ressource'});
+  }
+});
+
+router.post('/:id/friend', function(req, res){
+  if (req.accepts('text/html') || req.accepts('application/json')){
+    FriendService.create({userAskId: req.user._id, userReceiveId: req.params.id})
+      .then(function(friend){
+        if (req.accepts('text/html')) {
+          return res.redirect(req.header('Referer') || '/');
+        }
+        if (req.accepts('application/json')) {
+          res.status(200).send(friend);
+        }
+      })
+    ;
+  }else {
+    res.status(406).send({err: 'Not valid type for asked ressource'});
   }
 });
 
