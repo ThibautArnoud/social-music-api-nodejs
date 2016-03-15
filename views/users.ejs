@@ -1,0 +1,29 @@
+<% include partials/header %>
+<form class="form-inline">
+  <div class="form-group">
+    <label for="select">Filter by : </label>
+    <select id="select" class="form-control" name="type">
+      <option value="displayName">Display Name</option>
+      <option value="username">Username</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <input type="text" name="query" class="form-control" id="exampleInputEmail2" placeholder="Edouard">
+  </div>
+  <button type="submit" class="btn btn-default">Search</button>
+</form>
+<table class="table table-striped table-bordered">
+    <tr>
+        <th>Display Name</th>
+        <th>Username</th>
+    </tr>
+    <% users.forEach(function(user) {%>
+        <tr>
+            <td>
+                <a href="/users/<%=user._id%>"><%=user.displayName%></a>
+            </td>
+            <td><%=user.username%></td>
+        </tr>
+    <% }) %>
+</table>
+<% include partials/footer %>

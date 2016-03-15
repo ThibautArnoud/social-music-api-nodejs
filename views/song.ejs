@@ -1,0 +1,41 @@
+<% include partials/header %>
+   <h1><%=song.title%></h1>
+   <hr/>
+   Album  : <%=song.album%><br/>
+   Artist : <%=song.artist%><br/>
+   <% if (song.year) { %>
+      Year   : <%=song.year%><br/>
+   <% } %>
+   <% if (song.bpm) { %>
+      BPM   : <%=song.bpm%><br/>
+   <% } %>
+   <br/>
+   <% if (user_admin) { %>
+    <a href="/songs/edit/<%=song._id%>">Editer</a> |
+   <% } %>
+   <%if(!note){%>
+   <form method="post" action="/songs/<%= song._id%>/notes" class="form-inline">
+     <div class="form-group">
+       <select id="select" class="form-control" name="note">
+         <option value="0">0</option>
+         <option value="1">1</option>
+         <option value="2">2</option>
+         <option value="3">3</option>
+         <option value="4">4</option>
+         <option value="5">5</option>
+       </select>
+     </div>
+     <button type="submit" class="btn btn-default">Note</button>
+   </form>
+   <%}else{%>
+     <%= note.note %>
+   <%}%>
+   <% if(userHasFav){ %>
+     <p>You like this song !</p>
+   <% }else {%>
+   <form method="post" action="/songs/<%= song._id%>/favorite" class="form-inline">
+     <button type="submit" class="btn btn-default">Add to favorite</button>
+   </form>
+   <%}%>
+   <a href="/songs">Toutes les chansons</a>
+<% include partials/footer %>

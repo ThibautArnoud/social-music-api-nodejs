@@ -1,0 +1,49 @@
+<% include partials/header %>
+   <h1>Welcome to Social Music</h1>
+   <h2>Top 5 chansons</h2>
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Album</th>
+                <th>Artist</th>
+                <th>Year</th>
+                <th>BPM</th>
+                <th>Note</th>
+            </tr>
+        </thead>
+        <% top5.forEach(function(top) {%>
+            <tr>
+                <td>
+                    <a href="/songs/<%=top._id%>"><%=top.song.title%></a>
+                </td>
+                <td><%=top.song.album%></td>
+                <td><%=top.song.artist%></td>
+                <td>
+                    <% if (top.song.year) { %><%=top.song.year%><% } %>
+                </td>
+                <td>
+                    <% if (top.song.bpm) { %><%=top.song.bpm%><% } %>
+                </td>
+                <td><%= top.avgNote %></td>
+            </tr>
+        <% }) %>
+    </table>
+    <h2>Last Users</h2>
+     <table class="table table-condensed">
+         <thead>
+             <tr>
+                 <th>Display Name</th>
+                 <th>Date</th>
+             </tr>
+         </thead>
+         <% lastUsers.forEach(function(user) {%>
+             <tr>
+                 <td>
+                     <a href="/users/<%=user._id%>"><%=user.displayName%></a>
+                 </td>
+                 <td><%= user.createdAt %></td>
+             </tr>
+         <% }) %>
+     </table>
+<% include partials/footer %>
