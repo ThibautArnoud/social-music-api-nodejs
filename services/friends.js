@@ -22,4 +22,5 @@ exports.create = function(friend) {
 
 exports.deleteAsk = function(query) {
     return Friends.findOneAndRemoveAsync();
+    // pas de query dans ta requete... elle plante
 };
