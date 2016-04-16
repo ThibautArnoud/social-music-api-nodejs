@@ -8,6 +8,7 @@ var FriendService = require('../services/friends');
 router.get('/', function(req, res, next) {
   if (req.accepts('text/html') || req.accepts('application/json')) {
     if(req.query.type && req.query.query){
+        // même remarque que pour le filtrage des songs, la logique est bonne, mais on peut factoriser encore
       switch (req.query.type) {
         case 'displayName':
           request = {displayName: {$regex: req.query.query, $options: 'i'}};
@@ -143,6 +144,7 @@ router.post('/me/friends/:id/accepts', function(req,res){
         UserService.addFriend(req.user._id, req.params.id)
           .then(function(user){
             FriendService.deleteAsk(req.user._id, req.params.id)
+            //deleteAsk d'attend un unique objet Json formatté pour faire la query, mais ici tu passes deux params separés...
               .then(function(){
                 req.logIn(user, function(error) {
                   if (!error) {
@@ -159,6 +161,25 @@ router.post('/me/friends/:id/accepts', function(req,res){
           })
       })
     ;
+    /*
+      voici un autre façon de faire en reorganisant tes appels async avec Bluebird
+      Promise.all([UserService.addFriend(req.user._id, req.params.id),
+                  UserService.addFriend(req.params.id, req.user._id),
+                  FriendService.deleteAsk(req.user._id, req.params.id)])
+          .then(function (currentUserUpdate) {
+              req.user.friends = currentUserUpdate.friends;
+              if (req.accepts('text/html')) {
+                  return res.redirect("/users/me/friends");
+              }
+              if (req.accepts('application/json')) {
+                  res.status(201).send(currentUserUpdate);
+              }
+          })
+          .catch(function(err) {
+            console.log(err, err.stack);
+          })
+      ;
+      */
   }
   else{
     res.status(406).send({err: 'Not valid type for asked ressource'});

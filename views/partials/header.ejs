@@ -26,6 +26,9 @@
 
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <!-- c'est un peu dommage qu'on affiche tout le menu lorsque l'user n'est pas connecté.
+            Il manque une validation ici. On aurait pu s'en servir de l'attribut user_session dans res.locals qu'on set
+            lors du verifyAuth-->
             <ul class="nav navbar-nav">
               <li><a href="/">Home</a></li>
               <li><a href="/songs">Music</a></li>
